@@ -9,7 +9,7 @@ Enables you to set a global password for all password-protected posts (and pages
 
 == Description ==
 
-If you publish a lot of password-protected posts (or even if you don't), you may end up using the same password for every post. With this plugin you can switch password protection on or off from the writing screen with just one click, and you can define the global post password from your 'Options -> Privacy' menu. When you change the global password, all password-protected posts are automatically updated with the new password.
+If you publish a lot of password-protected posts (or even if you don't), you may end up using the same password for every post. With this plugin you can define a global post password from your 'Options -> Privacy' menu, and switch password protection on or off from the writing screen with just one click. When you change the global password, all password-protected posts are automatically updated with the new password.
 
 Note that this plugin **does not** automatically enable password-protection on every post. It allows you to use a global password for every post that you choose to password-protect.
 
