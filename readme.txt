@@ -55,4 +55,6 @@ Your password will be stored in exactly the same manner as it would be if you se
 
 == Screenshots ==
 
-1. The post writing screen where you can switch a post's password-protection on or off.
+1. The post writing screen (WordPress 2.3) where you can switch a post's password-protection on or off.
+
+2. The post writing screen (WordPress 2.5) where you can switch a post's password-protection on or off.

@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Global Post Password
-Description: Enables you to define a global password for all password-protected posts. <a href="options-privacy.php">Click here to change the password</a>
+Description: Enables you to define a global password for all password-protected posts. <a href="options-privacy.php">Click here to change the password</a>.
 Plugin URI:  http://lud.icro.us/wordpress-plugin-global-post-password/
-Version:     0.1
+Version:     1.1
 License:     GNU General Public License
 Author:      John Blackbourn
 Author URI:  http://johnblackbourn.com/
@@ -50,7 +50,11 @@ class GlobalPostPassword {
 			$chk = ( $chk ? '' : 'checked="checked"' );
 			$replace .= "<label class='selectit'><input type='radio' name='post_password' value='' $chk />" . __(' Off', 'g_p_p') . '</label>';
 			$content = preg_replace('/<input name="post_password".*?\/>/i', $replace, $content);
+			# WP 2.3:
 			$content = str_replace('<h3 class="dbx-handle">' . __('Post Password') . '</h3>', '<h3 class="dbx-handle">' . __('Password Protection', 'g_p_p') . '</h3>', $content);
+			# WP 2.5:
+			$content = str_replace('<h3>' . __('Password Protect This Post') . '</h3>', '<h3 class="dbx-handle">' . __('Password Protection', 'g_p_p') . '</h3>', $content);
+			$content = str_replace(__('Setting a password will require people who visit your blog to enter the above password to view this post and its comments.'), __('Enabling password protection will require people who visit your blog to enter the global post password (<a href="options-privacy.php">set here</a>) to view this post and its comments.', 'g_p_p'), $content);
 			}
 		return $content;
 	}
@@ -62,7 +66,11 @@ class GlobalPostPassword {
 		#passworddiv input {
 			margin-top: inherit;
 			width: inherit;
-			}
+		}
+
+		#passworddiv label {
+			display: block;
+		}
 
 		--></style>
 		<?php
