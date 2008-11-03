@@ -2,7 +2,7 @@
 Contributors: johnbillion
 Tags: post, password, privacy
 Requires at least: 2.1
-Tested up to: 2.5
+Tested up to: 2.6.3
 Stable tag: trunk
 
 Enables you to set a global password for all password-protected posts (and pages).
