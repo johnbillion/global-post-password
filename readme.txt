@@ -2,7 +2,7 @@
 Contributors: johnbillion
 Tags: post, password, privacy
 Requires at least: 2.1
-Tested up to: 2.6.3
+Tested up to: 2.7
 Stable tag: trunk
 
 Enables you to set a global password for all password-protected posts (and pages).
@@ -58,3 +58,5 @@ Your password will be stored in exactly the same manner as it would be if you se
 1. The post writing screen (WordPress 2.3) where you can switch a post's password-protection on or off.
 
 2. The post writing screen (WordPress 2.5) where you can switch a post's password-protection on or off.
+
+3. The post writing screen (WordPress 2.7) where you can switch a post's password-protection on or off.

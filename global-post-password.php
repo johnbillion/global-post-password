@@ -3,7 +3,7 @@
 Plugin Name: Global Post Password
 Description: Enables you to define a global password for all password-protected posts. <a href="options-privacy.php">Click here to change the password</a>.
 Plugin URI:  http://lud.icro.us/wordpress-plugin-global-post-password/
-Version:     1.1
+Version:     1.2
 License:     GNU General Public License
 Author:      John Blackbourn
 Author URI:  http://johnblackbourn.com/
@@ -28,7 +28,8 @@ class GlobalPostPassword {
 			add_action('admin_footer', array(&$this, 'end_buffer'));
 			add_action('blog_privacy_selector', array(&$this, 'options_screen'));
 		}
-		elseif ( strpos($_SERVER['REQUEST_URI'], 'post-new.php') or
+		elseif ( strpos($_SERVER['REQUEST_URI'], 'edit.php') or
+		         strpos($_SERVER['REQUEST_URI'], 'post-new.php') or
 		         strpos($_SERVER['REQUEST_URI'], 'page-new.php') or
 		         strpos($_SERVER['REQUEST_URI'], 'post.php'    ) or
 		         strpos($_SERVER['REQUEST_URI'], 'page.php'    ) ) {
@@ -36,6 +37,13 @@ class GlobalPostPassword {
 			add_action('admin_footer', array(&$this, 'end_buffer'));
 		}
 		add_action('update_option_globalpostpassword', array(&$this, 'update_passwords'));
+		# WP 2.7 specific:
+		add_filter('whitelist_options', array( &$this, 'whitelist_options' ));
+	}
+
+	function whitelist_options( $list ) {
+		$list['privacy'][] = 'globalpostpassword';
+		return $list;
 	}
 
 	function buffer( $content ) {
@@ -43,16 +51,16 @@ class GlobalPostPassword {
 		if ( strpos($_SERVER['REQUEST_URI'], 'options-privacy.php') )
 			$content = str_replace('name="page_options" value="', 'name="page_options" value="globalpostpassword,', $content);
 		else {
-			$pw = get_option('globalpostpassword');
 			$p = get_post($post_ID);
+			$pw = get_option('globalpostpassword');
 			$chk = ( $p->post_password != '' ) ? 'checked="checked"' : '';
-			$replace = "<label class='selectit'><input type='radio' name='post_password' value='$pw' $chk />" . __(' On', 'g_p_p') . '</label>';
+			$replace = "<label class='selectit'><input type='radio' name='post_password' value='$pw' $chk />" . __(' On ', 'g_p_p') . '</label>';
 			$chk = ( $chk ? '' : 'checked="checked"' );
-			$replace .= "<label class='selectit'><input type='radio' name='post_password' value='' $chk />" . __(' Off', 'g_p_p') . '</label>';
-			$content = preg_replace('/<input name="post_password".*?\/>/i', $replace, $content);
-			# WP 2.3:
+			$replace .= "<label class='selectit'><input type='radio' name='post_password' value='' $chk />" . __(' Off ', 'g_p_p') . '</label>';
+			$content = preg_replace('/<input (type="text" )?name="post_password".*?\/>/i', $replace, $content);
+			# WP 2.3 specific:
 			$content = str_replace('<h3 class="dbx-handle">' . __('Post Password') . '</h3>', '<h3 class="dbx-handle">' . __('Password Protection', 'g_p_p') . '</h3>', $content);
-			# WP 2.5:
+			# WP 2.5 specific:
 			$content = str_replace('<h3>' . __('Password Protect This Post') . '</h3>', '<h3 class="dbx-handle">' . __('Password Protection', 'g_p_p') . '</h3>', $content);
 			$content = str_replace(__('Setting a password will require people who visit your blog to enter the above password to view this post and its comments.'), __('Enabling password protection will require people who visit your blog to enter the global post password (<a href="options-privacy.php">set here</a>) to view this post and its comments.', 'g_p_p'), $content);
 			}
