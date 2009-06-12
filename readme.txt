@@ -2,7 +2,7 @@
 Contributors: johnbillion
 Tags: post, password, privacy
 Requires at least: 2.1
-Tested up to: 2.7.1
+Tested up to: 2.8
 Stable tag: trunk
 
 Enables you to set a global password for all password-protected posts (and pages).
@@ -53,10 +53,10 @@ Your password will be stored in exactly the same manner as it would be if you se
 
 **Note:** When you visit the 'Options -> Privacy' menu in WordPress the password will be displayed to you in plain text, so make sure no-one's looking over your shoulder.
 
+= Can users log out of password protected posts? =
+
+Try my <a href="http://wordpress.org/extend/plugins/logout-password-protected-posts/">Logout of Password Protected Posts</a> plugin which provides this functionality.
+
 == Screenshots ==
 
-1. The post writing screen (WordPress 2.3) where you can switch a post's password-protection on or off.
-
-2. The post writing screen (WordPress 2.5) where you can switch a post's password-protection on or off.
-
-3. The post writing screen (WordPress 2.7) where you can switch a post's password-protection on or off.
+1. Switching a post's password protection on or off.
