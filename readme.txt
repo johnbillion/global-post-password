@@ -1,8 +1,9 @@
 === Global Post Password ===
 Contributors: johnbillion
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7338829
 Tags: post, password, privacy
 Requires at least: 2.1
-Tested up to: 2.8
+Tested up to: 2.8.4
 Stable tag: trunk
 
 Enables you to set a global password for all password-protected posts (and pages).
