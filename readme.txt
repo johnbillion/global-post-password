@@ -1,28 +1,27 @@
 === Global Post Password ===
 Contributors: johnbillion
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7338829
 Tags: post, password, privacy
-Requires at least: 2.1
-Tested up to: 2.8.4
+Requires at least: 2.7
+Tested up to: 2.8.9
 Stable tag: trunk
 
-Enables you to set a global password for all password-protected posts (and pages).
+Enables you to globally set a password for all password-protected posts (and pages).
 
 == Description ==
 
-If you publish a lot of password-protected posts (or even if you don't), you may end up using the same password for every post. With this plugin you can define a global post password from your 'Options -> Privacy' menu, and switch password protection on or off from the writing screen with just one click. When you change the global password, all password-protected posts are automatically updated with the new password.
+If you publish a lot of password-protected posts (or even if you don't), you may end up using the same password for every post. With this plugin you can define a global post password from your 'Settings -> Privacy' menu, and switch password protection on or off from the writing screen with just one click. When you change the global password, all password-protected posts are automatically updated with the new password.
 
 Note that this plugin **does not** automatically enable password-protection on every post. It allows you to use a global password for every post that you choose to password-protect.
 
 == Installation ==
 
-This plugin works with WordPress version 2.1 or later.
+This plugin works with WordPress version 2.7 or later.
 
 1. Unzip the ZIP file and drop the folder straight into your `wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Visit the 'Options -> Privacy' menu in WordPress and set a global post password.
+3. Visit the 'Settings -> Privacy' menu in WordPress and set a global post password.
 
-Now whenever you write or edit a post (or page) you'll be able to switch password-protection on or off with one click, instead of having to manually type in a password for each post. You can change the password whenever you like.
+Now whenever you write or edit a post (or page) you'll be able to switch password-protection on or off with one click, instead of having to manually type in a password for each post. You can change the password whenever you like from the 'Settings -> Privacy' menu.
 
 == Frequently Asked Questions ==
 
@@ -32,7 +31,7 @@ No. It allows you to use a global password for every post that you choose to pas
 
 = How do I change the global post password? =
 
-Visit the 'Options -> Privacy' menu in WordPress and you'll see the option to change the password there.
+Visit the 'Settings -> Privacy' menu in WordPress and you'll see the option to change the password there.
 
 = Do I have to have administrator privileges to change the global post password? =
 
@@ -40,19 +39,15 @@ Yes. Only users with the 'manage_options' capability can change the global post 
 
 = What if I forget the password? =
 
-Visit the 'Options -> Privacy' menu in WordPress and the password will be displayed there. And don't forget it again.
+Visit the 'Settings -> Privacy' menu in WordPress and the password will be displayed there. And don't forget it again.
 
 = What's the correct way to remove the global post password? =
 
-Be careful here. If you want to remove the global post password functionality, **do not** set a blank password under 'Options -> Privacy' as this will remove password protection from every post on your blog! (Unless of course that *is* what you want to do.) All you have to do is disable or uninstall the plugin and normal password-protection functionality will return (password-protected posts will remain protected with the password you last set under 'Options -> Privacy').
+Be careful here. If you want to remove the global post password functionality and return to per-post passwords, **do not** set a blank password under 'Settings -> Privacy' as this will remove password protection from every post on your blog! All you have to do is disable or uninstall the plugin and normal password-protection functionality will return (password-protected posts will remain protected with the password you last set under 'Settings -> Privacy').
 
-= How secure are password-protected posts? / Can people find out my password? / etc =
+= How secure are password-protected posts? =
 
 This plugin uses Wordpress' built-in password protection system and simply enables you to set the password for all password-protected posts globally. There are no known ways to read a password-protected post without knowing the password for it.
-
-Your password will be stored in exactly the same manner as it would be if you set the password on a per-post basis - as unencrypted plain text in your database. It is no less secure than the normal password-protection system.
-
-**Note:** When you visit the 'Options -> Privacy' menu in WordPress the password will be displayed to you in plain text, so make sure no-one's looking over your shoulder.
 
 = Can users log out of password protected posts? =
 
@@ -61,3 +56,20 @@ Try my <a href="http://wordpress.org/extend/plugins/logout-password-protected-po
 == Screenshots ==
 
 1. Switching a post's password protection on or off.
+
+== Changelog ==
+
+= 1.3 =
+* Introduction of (optional) multiple global passwords.
+* Removal of redundant radio buttons on post editing screen.
+* Support for Quick Edit.
+* WordPress 2.7 or later is now a requirement.
+
+= 1.2 =
+* WordPress 2.7 compatibility.
+
+= 1.1 =
+* WordPress 2.6 compatibility.
+
+= 1.0 =
+* Initial release.
