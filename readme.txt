@@ -57,6 +57,8 @@ Try my <a href="http://wordpress.org/extend/plugins/logout-password-protected-po
 
 1. Switching a post's password protection on or off.
 
+2. The settings screen.
+
 == Changelog ==
 
 = 1.3 =
