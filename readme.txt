@@ -1,5 +1,6 @@
 === Global Post Password ===
 Contributors: johnbillion
+Donate link: http://lud.icro.us/donations/
 Tags: post, password, privacy
 Requires at least: 2.7
 Tested up to: 2.8.9
