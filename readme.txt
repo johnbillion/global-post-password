@@ -2,8 +2,8 @@
 Contributors: johnbillion
 Donate link: http://lud.icro.us/donations/
 Tags: post, password, privacy
-Requires at least: 2.7
-Tested up to: 2.8.9
+Requires at least: 2.8
+Tested up to: 2.9.9
 Stable tag: trunk
 
 Enables you to globally set a password for all password-protected posts (and pages).
@@ -16,7 +16,7 @@ Note that this plugin **does not** automatically enable password-protection on e
 
 == Installation ==
 
-This plugin works with WordPress version 2.7 or later.
+This plugin works with WordPress version 2.8 or later.
 
 1. Unzip the ZIP file and drop the folder straight into your `wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
@@ -57,10 +57,14 @@ Try my <a href="http://wordpress.org/extend/plugins/logout-password-protected-po
 == Screenshots ==
 
 1. Switching a post's password protection on or off.
-
 2. The settings screen.
 
 == Changelog ==
+
+= 1.4 =
+* Full compatibility with Quick Edit.
+* New settings that enable using post passwords in permalinks and feed URLs.
+* WordPress 2.8 or later is now a requirement.
 
 = 1.3 =
 * Introduction of (optional) multiple global passwords.
