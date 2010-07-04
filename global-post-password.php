@@ -3,7 +3,7 @@
 	Plugin Name: Global Post Password
 	Description: Enables you to define a global password for all password-protected posts. <a href="options-privacy.php">Click here to change the password</a>.
 	Plugin URI:  http://lud.icro.us/wordpress-plugin-global-post-password/
-	Version:     1.4
+	Version:     1.4.1
 	Author:      John Blackbourn
 	Author URI:  http://johnblackbourn.com/
 
@@ -24,7 +24,7 @@ class GlobalPostPassword {
 	function GlobalPostPassword() {
 		$settings = (array) get_option( 'globalpostpassword_settings' );
 		if ( $this->is_edit_screen() ) {
-			add_action( 'admin_menu',        array( &$this, 'start_buffer_edit' ) );
+			add_action( 'admin_menu',        array( &$this, 'start_buffer' ) );
 			add_action( 'admin_footer',      array( &$this, 'end_buffer' ) );
 		} else if ( $this->is_manage_screen() ) {
 			add_action( 'admin_footer',      array( &$this, 'js_manage' ) );
@@ -36,6 +36,8 @@ class GlobalPostPassword {
 		if ( isset( $_GET['pass'] ) and $this->check_password( $_GET['pass'] ) ) {
 			if ( $settings['in_permalinks'] ) {
 				add_action( 'template_redirect', array( &$this, 'redirect' ) );
+			}
+			if ( $settings['in_permalinks'] ) {
 				add_filter( 'the_permalink_rss', array( &$this, 'permalink_rss' ) );
 			}
 			if ( $settings['in_feed'] ) {
@@ -51,7 +53,6 @@ class GlobalPostPassword {
 	function redirect() {
 		if ( !is_single() )
 			return;
-
 		$password = $this->check_password( $_GET['pass'] );
 		if ( get_magic_quotes_gpc() )
 			$password = stripslashes( $password );
@@ -129,7 +130,7 @@ class GlobalPostPassword {
 			$('.editinline').click(function() {
 				setTimeout( 'set_password_switch()', 1 ); // hacky
 			});
-			$('<label><input type="checkbox" class="inline-edit-password-switch" /> <span class="checkbox-title">Password protected</span></label>').insertAfter('.inline-edit-password-input').click(function(){
+			$('<label><input type="checkbox" class="inline-edit-password-switch" /> <span class="checkbox-title"><?php _e('Password protected', 'g_p_p' ); ?></span></label>').insertAfter('.inline-edit-password-input').click(function(){
 				val = $('input',this).attr('checked') ? '<?php echo esc_attr( $passes[0] ); ?>' : '';
 				$('.inline-edit-password-input').val(val);
 			});
@@ -145,6 +146,7 @@ class GlobalPostPassword {
 		<script type="text/javascript">
 
 		jQuery(function($) {
+
 			$('#g_p_p h4').show();
 			if ( $('#g_p_p input').length > 1 )
 				$('#g_p_p input:last, #g_p_p br:last').hide();
@@ -152,6 +154,21 @@ class GlobalPostPassword {
 				$('#g_p_p input:last').after($('#g_p_p input:last').clone().val('').show()).after('<br />');
 				return false;
 			});
+
+			$('#globalpostpassword').change(function(){
+				if ( '' == $(this).val() )
+					$(this).parents('tr').addClass('form-invalid');
+				else
+					$(this).parents('tr').removeClass('form-invalid');
+			});
+
+			$('form[action="options.php"]').submit(function(){
+				if ( '' != $('#globalpostpassword').val() )
+					return true;
+				alert( '<?php _e('The global post password cannot be blank. If you wish to return to per-post passwords, just deactivate or uninstall the Global Post Password plugin.', 'g_p_p' ); ?>' );
+				return false;
+			});
+
 		});
 
 		</script>
@@ -185,9 +202,8 @@ class GlobalPostPassword {
 		</tr>
 		<tr valign="top">
 			<th scope="row"><?php _e('Global Post Password', 'g_p_p'); ?></th>
-			<td><input name="globalpostpassword[0]" type="text" value="<?php echo esc_attr( $passes[0] ); ?>" class="regular-text" />
+			<td><input name="globalpostpassword[0]" id="globalpostpassword" type="text" value="<?php echo esc_attr( $passes[0] ); ?>" class="regular-text" maxlength="20" />
 			    <p><?php _e('All posts which are password-protected will use this password.', 'g_p_p'); ?></p>
-			    <p class="setting-description description"><?php _e('<strong>Warning:</strong> Setting this password to a blank value will remove password protection from all posts! If you wish to return to per-post passwords, deactivate or uninstall the Global Post Password plugin.', 'g_p_p'); ?></p>
 			</td>
 		</tr>
 		<tr valign="top">
@@ -197,30 +213,33 @@ class GlobalPostPassword {
 			foreach ( $passes as $key => $pass ) {
 				if ( !$key )
 					continue;
-				echo '<input name="globalpostpassword[]" type="text" value="' . esc_attr( $pass ) . '" class="regular-text" /><br />';
+				echo '<input name="globalpostpassword[]" type="text" value="' . esc_attr( $pass ) . '" class="regular-text" maxlength="20" /><br />';
 			}
 
 			?>
-			<input name="globalpostpassword[]" type="text" value="" class="regular-text" />
+			<input name="globalpostpassword[]" type="text" value="" class="regular-text" maxlength="20" />
 			<h4 style="display:none"><a href="#"><?php _e('+ Add', 'g_p_p'); ?></a></h4>
 			<p><?php _e('Optionally, any number of additional global post passwords can be set here.', 'g_p_p'); ?></p>
-			<p class="setting-description description"><?php _e( 'These work just like the main global post password, but can be changed or removed whenever necessary. Users can enter the global post password or any one of the additional global post passwords to gain access to any password protected post. This gives you the ability to have temporary passwords which can be given to certain users and revoked at a later date.', 'g_p_p'); ?></p>
+			<p class="setting-description description"><?php _e( 'These work just like the main global post password, but can be removed at any time. Users can enter any of the global post passwords to gain access to any password protected post. This gives you the ability to have temporary passwords which can be revoked.', 'g_p_p'); ?></p>
 			</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><?php _e('Additional Settings', 'g_p_p'); ?></th>
+			<th scope="row"><?php _e('Passwords in URLs', 'g_p_p'); ?></th>
 			<td>
 				<p><label><input name="globalpostpassword_settings[in_permalinks]" value="1" type="checkbox" <?php checked( $settings['in_permalinks'] ); ?> /> <?php _e('Allow post password in permalinks', 'g_p_p'); ?></label><br />
-				<span class="setting-description description"><?php printf( __( 'Appending <code>?pass=%s</code> to a post permalink will display the post without asking for the password.', 'g_p_p' ), esc_attr( $passes[0] ) ); ?></span></p>
+				<span class="setting-description description"><?php printf( __( 'With this setting enabled, appending <code>?pass=%s</code> to a post permalink will display the post without asking for the password.', 'g_p_p' ), esc_attr( $passes[0] ) ); ?></span></p>
 				<p><label><input name="globalpostpassword_settings[in_feed]" value="1" type="checkbox" <?php checked( $settings['in_feed'] ); ?> /> <?php _e('Allow post password in your feed URL', 'g_p_p'); ?></label><br />
-				<span class="setting-description description"><?php printf( __( 'Appending <code>?pass=%s</code> to your blog&rsquo;s feed URL will display password protected posts without asking for passwords.', 'g_p_p' ), esc_attr( $passes[0] ) ); ?></span></p>
+				<span class="setting-description description"><?php printf( __( 'With this setting enabled, appending <code>?pass=%s</code> to your blog&rsquo;s feed URL will display password protected posts in your feed without asking for passwords.', 'g_p_p' ), esc_attr( $passes[0] ) ); ?></span></p>
 				<p class="setting-description description"><?php _e( '<strong>Tip:</strong> With either of these settings enabled, you can use any of your global post passwords in the URL.', 'g_p_p' ); ?></p>
+				<p class="setting-description description"><?php _e( '<strong>Tip:</strong> If you enable both these options, permalinks in your feed will automatically have the password appended so users can click through to the post without needing to enter the password.', 'g_p_p' ); ?></p>
 		<?php
 	}
 
 	function update( $passes ) {
 		global $wpdb;
 		$passes = (array) $passes;
+		if ( '' == trim( $passes[0] ) )
+			return get_option('globalpostpassword');
 		foreach ( $passes as $key => $pass ) {
 			if ( !trim( $pass ) )
 				unset( $passes[$key] );
@@ -233,7 +252,7 @@ class GlobalPostPassword {
 		return array_values( $passes );
 	}
 
-	function start_buffer_edit() {
+	function start_buffer() {
 		ob_start( array( &$this, 'buffer_edit' ) );
 	}
 
@@ -271,8 +290,12 @@ class GlobalPostPassword {
 
 }
 
-$g_p_p = new GlobalPostPassword();
+load_plugin_textdomain(
+	'g_p_p',
+	PLUGINDIR . '/' . dirname( plugin_basename( __FILE__ ) ),
+	dirname( plugin_basename( __FILE__ ) )
+);
 
-load_plugin_textdomain( 'g_p_p', PLUGINDIR . '/' . dirname( plugin_basename( __FILE__ ) ), dirname( plugin_basename( __FILE__ ) ) );
+$g_p_p = new GlobalPostPassword();
 
 ?>
