@@ -65,6 +65,9 @@ Yes. Try my <a href="http://wordpress.org/extend/plugins/logout-password-protect
 
 == Changelog ==
 
+= 1.4.2 =
+* Add a body class of 'has-post-password' to individual posts when a user has entered the correct password.
+
 = 1.4.1 =
 * Additional protection so you can't accidentally remove password protection from all your posts.
 
@@ -90,5 +93,5 @@ Yes. Try my <a href="http://wordpress.org/extend/plugins/logout-password-protect
 
 == Upgrade Notice ==
 
-= 1.4.1 =
-Additional protection so you can't accidentally remove password protection from all your posts.
+= 1.4.2 =
+Add a body class of 'has-post-password' to individual posts when a user has entered the correct password.

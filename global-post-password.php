@@ -1,21 +1,21 @@
 <?php
 /*
-	Plugin Name: Global Post Password
-	Description: Enables you to define a global password for all password-protected posts. <a href="options-privacy.php">Click here to change the password</a>.
-	Plugin URI:  http://lud.icro.us/wordpress-plugin-global-post-password/
-	Version:     1.4.1
-	Author:      John Blackbourn
-	Author URI:  http://johnblackbourn.com/
+Plugin Name: Global Post Password
+Description: Enables you to define a global password for all password-protected posts. <a href="options-privacy.php">Click here to change the password</a>.
+Plugin URI:  http://lud.icro.us/wordpress-plugin-global-post-password/
+Version:     1.4.2
+Author:      John Blackbourn
+Author URI:  http://johnblackbourn.com/
 
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
 */
 
@@ -48,6 +48,7 @@ class GlobalPostPassword {
 		add_filter( 'whitelist_options',     array( &$this, 'whitelist_options' ) );
 		add_action( 'blog_privacy_selector', array( &$this, 'settings' ) );
 		add_action( 'admin_init',            array( &$this, 'register' ) );
+		add_action( 'body_class',            array( &$this, 'body_class' ) );
 	}
 
 	function redirect() {
@@ -226,13 +227,28 @@ class GlobalPostPassword {
 		<tr valign="top">
 			<th scope="row"><?php _e('Passwords in URLs', 'g_p_p'); ?></th>
 			<td>
-				<p><label><input name="globalpostpassword_settings[in_permalinks]" value="1" type="checkbox" <?php checked( $settings['in_permalinks'] ); ?> /> <?php _e('Allow post password in permalinks', 'g_p_p'); ?></label><br />
+				<p><label><input name="globalpostpassword_settings[in_permalinks]" value="1" type="checkbox" <?php checked( @$settings['in_permalinks'] ); ?> /> <?php _e('Allow post password in permalinks', 'g_p_p'); ?></label><br />
 				<span class="setting-description description"><?php printf( __( 'With this setting enabled, appending <code>?pass=%s</code> to a post permalink will display the post without asking for the password.', 'g_p_p' ), esc_attr( $passes[0] ) ); ?></span></p>
-				<p><label><input name="globalpostpassword_settings[in_feed]" value="1" type="checkbox" <?php checked( $settings['in_feed'] ); ?> /> <?php _e('Allow post password in your feed URL', 'g_p_p'); ?></label><br />
+				<p><label><input name="globalpostpassword_settings[in_feed]" value="1" type="checkbox" <?php checked( @$settings['in_feed'] ); ?> /> <?php _e('Allow post password in your feed URL', 'g_p_p'); ?></label><br />
 				<span class="setting-description description"><?php printf( __( 'With this setting enabled, appending <code>?pass=%s</code> to your blog&rsquo;s feed URL will display password protected posts in your feed without asking for passwords.', 'g_p_p' ), esc_attr( $passes[0] ) ); ?></span></p>
 				<p class="setting-description description"><?php _e( '<strong>Tip:</strong> With either of these settings enabled, you can use any of your global post passwords in the URL.', 'g_p_p' ); ?></p>
 				<p class="setting-description description"><?php _e( '<strong>Tip:</strong> If you enable both these options, permalinks in your feed will automatically have the password appended so users can click through to the post without needing to enter the password.', 'g_p_p' ); ?></p>
 		<?php
+	}
+
+	function body_class( $classes ) {
+
+		global $post;
+
+		$cookie = 'wp-postpass_' . COOKIEHASH;
+
+		if ( is_singular() and !empty( $post->post_password ) ) {
+			if ( isset( $_COOKIE[$cookie] ) and $this->check_password( $_COOKIE[$cookie] ) )
+				$classes[] = 'has-post-password';
+		}
+
+		return $classes;
+
 	}
 
 	function update( $passes ) {
