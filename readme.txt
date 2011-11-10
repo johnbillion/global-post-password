@@ -3,7 +3,7 @@ Contributors: johnbillion
 Donate link: http://lud.icro.us/donations/
 Tags: post, password, privacy
 Requires at least: 2.8
-Tested up to: 3.0
+Tested up to: 3.2
 Stable tag: trunk
 
 Enables you to globally set a password for all password protected posts (and pages).
