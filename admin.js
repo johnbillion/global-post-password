@@ -1,4 +1,3 @@
-
 jQuery(function($){
 
 	// Manage:
@@ -26,10 +25,11 @@ jQuery(function($){
 	});
 
 	$('#globalpostpassword').change(function(){
-		if ( '' == $(this).val() )
+		if ( '' == $(this).val() ) {
 			$(this).closest('tr').addClass('form-invalid');
-		else
+		} else {
 			$(this).closest('tr').removeClass('form-invalid');
+		}
 	});
 
 	$('#globalpostpassword_form').submit(function(e){

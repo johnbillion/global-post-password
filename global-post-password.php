@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 Plugin Name: Global Post Password
 Description: Define a global password for all your password-protected posts and pages.
 Plugin URI:  https://johnblackbourn.com/wordpress-plugin-global-post-password/
@@ -21,7 +21,6 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
 */
 
 class GlobalPostPassword {
@@ -30,14 +29,12 @@ class GlobalPostPassword {
 	public $wp_hasher  = null;
 
 	public function __construct() {
-
 		$this->settings = (array) get_option( 'globalpostpassword_settings', array() );
 		$this->passes   = (array) get_option( 'globalpostpassword', array() );
 
 		add_action( 'init', array( $this, 'init' ) );
 
 		if ( is_admin() ) {
-
 			$plugin_file = $this->plugin_base();
 
 			add_action( 'admin_init',                            array( $this, 'register' ) );
@@ -48,9 +45,7 @@ class GlobalPostPassword {
 			add_action( 'load-edit.php',                         array( $this, 'assets' ) );
 			add_action( 'load-settings_page_globalpostpassword', array( $this, 'assets' ) );
 			add_filter( "plugin_action_links_{$plugin_file}",    array( $this, 'plugin_action_links' ), 10, 4 );
-
 		} else {
-
 			add_action( 'body_class', array( $this, 'body_class' ) );
 
 			if ( isset( $_GET['pass'] ) && $this->check_password( wp_unslash( $_GET['pass'] ) ) ) {
@@ -63,9 +58,7 @@ class GlobalPostPassword {
 					add_filter( 'the_excerpt_rss',   array( $this, 'excerpt_rss' ) );
 				}
 			}
-
 		}
-
 	}
 
 	public function admin_menu() {
@@ -126,7 +119,6 @@ class GlobalPostPassword {
 	}
 
 	public function register() {
-
 		register_setting( 'globalpostpassword', 'globalpostpassword', array( $this, 'update' ) );
 		register_setting( 'globalpostpassword', 'globalpostpassword_settings' );
 
@@ -154,11 +146,9 @@ class GlobalPostPassword {
 			array( $this, 'settings_urls' ),
 			'globalpostpassword'
 		);
-
 	}
 
 	public function buffer_edit( $content ) {
-
 		$search  = '|<span id="password-span">.*?</span>|i';
 		$replace = '';
 
@@ -173,11 +163,9 @@ class GlobalPostPassword {
 		$replace = '<span id="password-span">' . $replace . '</span>';
 
 		return preg_replace( $search, $replace, $content );
-
 	}
 
 	public function assets() {
-
 		wp_enqueue_script(
 			'globalpostpassword',
 			$this->plugin_url( 'admin.js' ),
@@ -194,37 +182,34 @@ class GlobalPostPassword {
 				'not_blank'          => __( 'The global password cannot be blank. If you wish to return to per-post passwords, you should deactivate or uninstall the Global Post Password plugin.', 'global-post-password' ),
 			)
 		);
-
 	}
 
 	public function init() {
-
 		load_plugin_textdomain(
 			'global-post-password',
 			false,
 			dirname( $this->plugin_base() ) . '/languages'
 		);
 
+		// phpcs:disable WordPress.Security.NonceVerification
 		if ( isset( $_POST['post_password'] ) && isset( $_GET['action'] ) && ( 'postpass' === $_GET['action'] ) ) {
-			if ( $password = $this->check_password( wp_unslash( $_POST['post_password'] ) ) ) {
+			$password = $this->check_password( wp_unslash( $_POST['post_password'] ) );
+			if ( $password ) {
 				$_POST['post_password'] = wp_slash( $password );
 			}
 		}
-
+		// phpcs:enable WordPress.Security.NonceVerification
 	}
 
 	public function check_password( $password ) {
-
 		if ( in_array( $password, $this->passes, true ) ) {
 			return $this->passes[0];
 		} else {
 			return false;
 		}
-
 	}
 
 	public function check_hashed_password( $hash ) {
-
 		if ( empty( $this->wp_hasher ) ) {
 			require_once ABSPATH . 'wp-includes/class-phpass.php';
 			$this->wp_hasher = new PasswordHash( 8, true );
@@ -237,11 +222,9 @@ class GlobalPostPassword {
 		}
 
 		return false;
-
 	}
 
 	public function settings() {
-
 		?>
 		<div class="wrap">
 			<h2><?php esc_html_e( 'Global Post Password', 'global-post-password' ); ?></h2>
@@ -256,7 +239,6 @@ class GlobalPostPassword {
 
 		</div>
 		<?php
-
 	}
 
 	public function settings_global() {
@@ -268,7 +250,6 @@ class GlobalPostPassword {
 	}
 
 	public function settings_additional() {
-
 		foreach ( $this->passes as $key => $pass ) {
 			if ( ! $key ) {
 				continue;
@@ -296,22 +277,30 @@ class GlobalPostPassword {
 				<input name="globalpostpassword_settings[in_permalinks]" value="1" type="checkbox" <?php checked( ! empty( $this->settings['in_permalinks'] ) ); ?> />
 				<?php esc_html_e( 'Allow password in permalinks', 'global-post-password' ); ?>
 			</label><br />
-			<span class="description"><?php
+			<span class="description">
+				<?php
 				printf(
+					/* translators: %s: The URL query variable */
 					esc_html__( 'With this setting enabled, appending %s to a permalink will display the content without prompting for a password.', 'global-post-password' ),
 					'<code>?pass=' . esc_html( $pass ) . '</code>'
-				); ?></span>
+				);
+				?>
+			</span>
 		</p>
 		<p>
 			<label>
 				<input name="globalpostpassword_settings[in_feed]" value="1" type="checkbox" <?php checked( ! empty( $this->settings['in_feed'] ) ); ?> />
 				<?php esc_html_e( 'Allow password in feed URLs', 'global-post-password' ); ?>
 			</label><br />
-			<span class="description"><?php
+			<span class="description">
+				<?php
 				printf(
+					/* translators: %s: The URL query variable */
 					esc_html__( 'With this setting enabled, appending %s to a feed URL will display password protected content in the feed without prompting for passwords.', 'global-post-password' ),
 					'<code>?pass=' . esc_html( $pass ) . '</code>'
-				); ?></span>
+				);
+				?>
+			</span>
 		</p>
 		<p class="description">
 			<?php esc_html_e( 'Tip: With either of these settings enabled, any global password can be used in the URL.', 'global-post-password' ); ?>
@@ -320,7 +309,6 @@ class GlobalPostPassword {
 	}
 
 	public function body_class( $classes ) {
-
 		global $post;
 
 		$cookie = 'wp-postpass_' . COOKIEHASH;
@@ -340,7 +328,6 @@ class GlobalPostPassword {
 		}
 
 		return $classes;
-
 	}
 
 	public function update( $passes ) {
@@ -410,4 +397,4 @@ class GlobalPostPassword {
 
 }
 
-$GLOBALS['globalpostpassword'] = new GlobalPostPassword;
+$GLOBALS['globalpostpassword'] = new GlobalPostPassword();
