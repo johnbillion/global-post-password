@@ -11,19 +11,11 @@ Globally set a password for all password protected posts and pages.
 
 If you publish many password protected posts (or even if you don't), you may end up using the same password for each one. With this plugin you can define a global password from your 'Settings -> Global Post Password' menu, and switch password protection on or off from the writing screen with just one click. Whenever you change the global password, all password protected posts are automatically updated with the new password.
 
+Now whenever you write or edit a post or page you'll be able to switch password protection on or off with one click, instead of having to manually type in a password each time. You can change the global password whenever you like from the 'Settings -> Global Post Password' menu.
+
 Note that this plugin **does not** automatically enable password protection on every post. It allows you to use a global password for every post that you choose to password protect.
 
-== Installation ==
-
-You can install this plugin directly from your WordPress dashboard:
-
- 1. Go to the *Plugins* menu and click *Add New*.
- 2. Search for *Global Post Password*.
- 3. Click *Install Now* next to the Global Post Password plugin.
- 4. Activate the plugin.
- 5. Visit the 'Settings -> Global Post Password' menu and set a global password.
-
-Now whenever you write or edit a post or page you'll be able to switch password protection on or off with one click, instead of having to manually type in a password each time. You can change the global password whenever you like from the 'Settings -> Global Post Password' menu.
+Please note that this plugin is **no longer actively maintained**. The global post password setting does not work with the block-based editor in WordPress and it's unlikely that I'll add support for it unless someone else volunteers to develop it. It does work with the "Classic" editor and with versions of WordPress prior to 5.0.
 
 == Frequently Asked Questions ==
 
@@ -54,6 +46,10 @@ If you want to remove the global password functionality and return to per-post p
 = How secure are password protected posts? =
 
 This plugin uses WordPress' built-in password protection system and simply enables you to set the password for all password protected posts globally. There are no known ways to read a password protected post without knowing the password for it.
+
+= Does this work with the block-based editor (Gutenberg)? =
+
+No. It does work with the "Classic" editor and with versions of WordPress prior to 5.0.
 
 = Can users log out of password protected posts? =
 
