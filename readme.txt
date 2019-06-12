@@ -2,7 +2,7 @@
 Contributors: johnbillion
 Tags: post, password, privacy
 Requires at least: 4.1
-Tested up to: 4.5
+Tested up to: 5.2
 Stable tag: trunk
 
 Globally set a password for all password protected posts and pages.
@@ -60,12 +60,10 @@ Yes. Try my <a href="https://wordpress.org/plugins/logout-password-protected-pos
 1. Switching password protection on or off.
 2. The settings screen.
 
-== Upgrade Notice ==
-
-= 1.5.1 =
-Various bugfixes and tweaks.
-
 == Changelog ==
+
+= 1.5.2 =
+* Minor code quality tweaks. No new features.
 
 = 1.5.1 =
 * When passing a password via the URL parameter, ensure the password cookie's behavior matches that of core's.

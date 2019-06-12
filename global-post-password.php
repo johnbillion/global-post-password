@@ -3,14 +3,14 @@
 Plugin Name: Global Post Password
 Description: Define a global password for all your password-protected posts and pages.
 Plugin URI:  https://johnblackbourn.com/wordpress-plugin-global-post-password/
-Version:     1.5.1
+Version:     1.5.2
 Author:      John Blackbourn
 Author URI:  https://johnblackbourn.com/
 Text Domain: global-post-password
 Domain Path: /languages/
 License:     GPL v2 or later
 
-Copyright 2007-2016 John Blackbourn
+Copyright 2007-2019 John Blackbourn
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
